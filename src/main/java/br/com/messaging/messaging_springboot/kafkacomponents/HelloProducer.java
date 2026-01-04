@@ -11,14 +11,14 @@ import org.springframework.stereotype.Service;
 public class HelloProducer {
 
     //este objeto foi criado para interagir com o kafka enviando os eventos
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate<String, Object> kafkaTemplate;
 
-    public HelloProducer(KafkaTemplate<String, String> kafkaTemplate) {
+    public HelloProducer(KafkaTemplate<String, Object> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
     //metodo para enviar mensagem ao seu topico setado
-    public void sendMessage(String message){
+    public void sendMessage(Object message){
         kafkaTemplate.send("hello-topic", message);
     }
 

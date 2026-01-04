@@ -1,3 +1,19 @@
 spring:
   application:
     name: messaging-springboot
+  kafka:
+    consumer:
+      group-id: group-1
+      auto-offset-reset: earliest
+        # Mudou de StringDeserializer para JsonDeserializer (pega o JSON do Kafka e remonta o Objeto Java)
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+            json:
+              trusted:
+                packages: '*' # Importante: Confia em qualquer pacote para deserializar
+    producer:
+          # Mudou de StringSerializer para JsonSerializer (pega o objeto Java e transforma em json para ser aceito pelo kafka)
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
