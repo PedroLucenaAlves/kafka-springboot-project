@@ -1,6 +1,21 @@
 spring:
   application:
     name: messaging-springboot
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/messaging_db
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    # Diz pro Hibernate falar o "dialeto" correto do Postgres
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true # Mostra os comandos SQL no terminal (útil para aprender)
+
   kafka:
     consumer:
       group-id: group-1
