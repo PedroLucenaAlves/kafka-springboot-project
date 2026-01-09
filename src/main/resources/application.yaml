@@ -20,10 +20,9 @@ spring:
     consumer:
       group-id: group-1
       auto-offset-reset: earliest
-        # Mudou de StringDeserializer para JsonDeserializer (pega o JSON do Kafka e remonta o Objeto Java)
+      # O SEGREDO ESTÁ AQUI EMBAIXO:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      enable-auto-commit: false
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       properties:
         spring:
             json:
