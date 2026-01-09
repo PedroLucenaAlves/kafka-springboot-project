@@ -1,4 +1,4 @@
-package br.com.messaging.messaging_springboot.config;
+package br.com.messaging.messaging_springboot.infrastructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ public class KafkaConfig {
         // Tente 3 vezes, esperando 1 segundo (1000ms) entre cada tentativa
         FixedBackOff backOff = new FixedBackOff(1000L, 3);
 
-        //manipulador de erros oficial
+        //cria o handler
         return new DefaultErrorHandler(recoverer, backOff);
     }
 }
