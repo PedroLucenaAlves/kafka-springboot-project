@@ -3,34 +3,39 @@ spring:
     name: messaging-springboot
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/messaging_db
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/messaging_db
     username: admin
     password: admin
     driver-class-name: org.postgresql.Driver
 
   jpa:
-    # Diz pro Hibernate falar o "dialeto" correto do Postgres
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: true
     hibernate:
       ddl-auto: update
-    show-sql: true # Mostra os comandos SQL no terminal (útil para aprender)
+    show-sql: true
 
   kafka:
+    # Se a variável KAFKA_HOST não existir, usa 'localhost'.
+    # Se a variável KAFKA_PORT não existir, usa '9092'.
+    bootstrap-servers: ${KAFKA_HOST:localhost}:${KAFKA_PORT:9092}
+
     consumer:
       group-id: group-1
       auto-offset-reset: earliest
-      # O SEGREDO ESTÁ AQUI EMBAIXO:
+
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
       properties:
         spring:
-            json:
-              trusted:
-                packages: '*' # Importante: Confia em qualquer pacote para deserializar
-    listener:
-      ack-mode: RECORD
-    producer:
-          # Mudou de StringSerializer para JsonSerializer (pega o objeto Java e transforma em json para ser aceito pelo kafka)
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+          json:
+            trusted:
+              packages: '*'
+
+      listener:
+        ack-mode: RECORD
+
+      producer:
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
